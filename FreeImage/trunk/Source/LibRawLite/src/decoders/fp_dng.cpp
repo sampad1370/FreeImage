@@ -14,6 +14,10 @@
 
 #include "../../internal/libraw_cxx_defs.h"
 
+#define _XOPEN_SOURCE
+#include <stdlib.h>
+#include <unistd.h>
+
 inline unsigned int __DNG_HalfToFloat(ushort halfValue)
 {
   int sign = (halfValue >> 15) & 0x00000001;
@@ -628,31 +632,30 @@ void LibRaw::uncompressed_fp_dng_load_raw()
 
             int inrowbytes = colsInTile * bytesps * ifd->samples;
             int fullrowbytes = tiles.tileWidth *bytesps * ifd->samples;
-            int outrowbytes = colsInTile * sizeof(float) * ifd->samples;
+			int outrowbytes = colsInTile * sizeof(float) * ifd->samples;
 
-            for (size_t row = 0; row < rowsInTile; ++row) // do not process full tile if not needed
-            {
-                unsigned char *dst = fullrowbytes > inrowbytes ? rowbuf.data(): // last tile in row, use buffer
-                    (unsigned char *)&float_raw_image
-                    [((y + row) * imgdata.sizes.raw_width + x) * ifd->samples];
-                libraw_internal_data.internal_data.input->read(dst, 1, fullrowbytes);
-                if (bytesps == 2 && difford)
-                    swab((char *)dst, (char *)dst, fullrowbytes);
-                else if (bytesps == 3 && (libraw_internal_data.unpacker_data.order == 0x4949)) // II-16bit
-                    swap24(dst, fullrowbytes);
-                if (bytesps == 4 && difford)
-                    swap32(dst, fullrowbytes);
+			for (size_t row = 0; row < rowsInTile; ++row) // do not process full tile if not needed
+			{
+				unsigned char *dst
+					= fullrowbytes > inrowbytes ? rowbuf.data() : // last tile in row, use buffer
+						  (unsigned char *) &float_raw_image[((y + row) * imgdata.sizes.raw_width + x)
+															 * ifd->samples];
+				libraw_internal_data.internal_data.input->read(dst, 1, fullrowbytes);
+				if (bytesps == 2 && difford)
+					swab((char *) dst, (char *) dst, fullrowbytes);
+				else if (bytesps == 3
+						 && (libraw_internal_data.unpacker_data.order == 0x4949)) // II-16bit
+					swap24(dst, fullrowbytes);
+				if (bytesps == 4 && difford)
+					swap32(dst, fullrowbytes);
 
-                float lmax = expandFloats(
-                    dst,
-                    tiles.tileWidth * ifd->samples,
-                    bytesps);
-                if (fullrowbytes > inrowbytes) // last tile in row: copy buffer to destination
+				float lmax = expandFloats(dst, tiles.tileWidth * ifd->samples, bytesps);
+				if (fullrowbytes > inrowbytes) // last tile in row: copy buffer to destination
                     memmove(&float_raw_image[((y + row) * imgdata.sizes.raw_width + x) * ifd->samples], dst, outrowbytes);
-                max = MAX(max, lmax);
-            }
-        }
-    }
+				max = MAX(max, lmax);
+			}
+		}
+	}
 
     imgdata.color.fmaximum = max;
 

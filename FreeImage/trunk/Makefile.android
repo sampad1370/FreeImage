@@ -1,0 +1,53 @@
+include Makefile.srcs
+
+TARGET = freeimages
+
+INSTALLDIR=./
+ANDROID_API=28
+
+SYSROOT=$(ANDROID_NDK_ROOT)/platforms/android-$(ANDROID_API)/arch-arm64/
+
+LDFLAGS = -L$(SYSROOT)/usr/lib/
+
+CC=clang
+CXX=clang++
+AR=aarch64-linux-android-ar
+
+SYSROOT_INCLUDE = -I$(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include
+SYSROOT_INCLUDE += -I$(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/include 
+SYSROOT_INCLUDE += -I$(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include/backward 
+SYSROOT_INCLUDE += -I$(ANDROID_NDK_ROOT)/sysroot/usr/include/aarch64-linux-android 
+SYSROOT_INCLUDE += -I$(ANDROID_NDK_ROOT)/sysroot/usr/include
+
+MODULES = $(SRCS:.c=.o)
+MODULES := $(MODULES:.cpp=.o)
+
+CFLAGS  = --sysroot $(SYSROOT)
+CFLAGS += $(INCLUDE) 
+CFLAGS += $(SYSROOT_INCLUDE)
+CFLAGS += -D__ANDROID_API__=$(ANDROID_API) -DANDROID -D__ANSI__ -DDISABLE_PERF_MEASUREMENT
+CFLAGS += -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -fopenmp -fPIE -Wno-attributes -ffast-math -fno-strict-aliasing
+
+CXXFLAGS  = --sysroot $(SYSROOT)
+CXXFLAGS += $(INCLUDE)
+CXXFLAGS += $(SYSROOT_INCLUDE)
+CXXFLAGS += -D__ANDROID_API__=$(ANDROID_API) -DANDROID -D__ANSI__ -DDISABLE_PERF_MEASUREMENT
+CXXFLAGS += -std=c++11 -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -fopenmp -fPIE -Wno-attributes -ffast-math -fno-strict-aliasing
+
+STATICLIB = lib$(TARGET).a
+SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).so
+LIBNAME= lib$(TARGET).so
+VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
+
+default:all install
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+all:$(MODULES)
+	$(AR) rcs $(STATICLIB) $(MODULES)
+	
+install:
