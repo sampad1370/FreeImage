@@ -14,7 +14,7 @@ win32: {
     #message($$outDir)
     #QMAKE_PRE_LINK=msbuild $$_PRO_FILE_PWD_\FreeImage\FreeImage.vs2022.sln /p:Configuration=Debug /p:OutDir=$$outDir/
 
-    QMAKE_POST_LINK=copy $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll)  $$shell_quote($$outDir\..\..\debug\FreeImaged.dll)
+    #QMAKE_POST_LINK=copy $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll)  $$shell_quote($$outDir\..\..\debug\FreeImaged.dll)
     #QMAKE_POST_LINK=copy $$shell_quote($$outDir\FreeImaged.dll) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll) && \
     #copy $$shell_quote($$outDir\FreeImaged.lib) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.lib) && \
     #copy $$shell_quote($$outDir\FreeImaged.pdb) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.pdb)
