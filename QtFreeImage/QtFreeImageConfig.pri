@@ -2,7 +2,7 @@ outDir=$$OUT_PWD/
 ProFilePwd=$$_PRO_FILE_PWD_
 
 CONFIG += c++11
-unix: {
+unix:!mac: {
     QMAKE_CXXFLAGS += -std=c++11
     DEFINES+=__ANSI__
     QMAKE_CXXFLAGS += -std=gnu++11
@@ -56,7 +56,9 @@ win32: {
 
 #    QMAKE_PRE_LINK=make -C $$ProFilePwd/trunk/ \
 #    --makefile=$$ProFilePwd/trunk/Makefile.android
-} else:unix: {
+} else:mac: {
+    QMAKE_CFLAGS += -Os -fexceptions -fvisibility=hidden -DNO_LCMS -D__ANSI__
+    QMAKE_CXXFLAGS +=-Wno-ctor-dtor-privacy -D__ANSI__ -std=c++11 -stdlib=libc++ -Wc++11-narrowing
 #    QMAKE_PRE_LINK=make -C $$ProFilePwd/trunk/ \
 #    --makefile=$$ProFilePwd/trunk/Makefile
 }

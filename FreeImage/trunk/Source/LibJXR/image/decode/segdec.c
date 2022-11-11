@@ -28,6 +28,7 @@
 
 #include "strcodec.h"
 #include "decode.h"
+#include <stdio.h>
 
 #ifdef MEM_TRACE
 #define TRACE_MALLOC    1
@@ -35,6 +36,11 @@
 #define TRACE_HEAP      0
 #include "memtrace.h"
 #endif
+
+#ifndef _BIG__ENDIAN_
+U32 _byteswap_ulong(U32 bits);
+#endif // _BIG__ENDIAN_
+
 
 extern const int dctIndex[3][16];
 extern const int blkOffset[16];

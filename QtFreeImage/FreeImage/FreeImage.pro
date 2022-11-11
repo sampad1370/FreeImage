@@ -8,7 +8,7 @@ include(../FreeImageToolkit/FreeImageToolkit.pro)
 win32: {
     DEFINES+=OPJ_STATIC FREEIMAGE_EXPORTS _CRT_SECURE_NO_DEPRECATE LIBRAW_NODLL
 }
-unix: QMAKE_LFLAGS_SHLIB+=-fopenmp
+unix:!mac: QMAKE_LFLAGS_SHLIB+=-fopenmp
 SysRoot =
 ExtraLib =
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
@@ -163,18 +163,18 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PW
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../LibOpenJPEG/debug/LibOpenJPEG.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../LibOpenJPEG/libLibOpenJPEG.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../FreeImageToolkit/release/ -lFreeImageToolkit
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../FreeImageToolkit/debug/ -lFreeImageToolkit
-else:unix: LIBS += -L$$OUT_PWD/../FreeImageToolkit/ -lFreeImageToolkit
+#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../FreeImageToolkit/release/ -lFreeImageToolkit
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../FreeImageToolkit/debug/ -lFreeImageToolkit
+#else:unix: LIBS += -L$$OUT_PWD/../FreeImageToolkit/ -lFreeImageToolkit
 
 INCLUDEPATH += $$PWD/../../FreeImage/trunk/Source/FreeImageToolkit
 DEPENDPATH += $$PWD/../../FreeImage/trunk/Source/FreeImageToolkit
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/release/libFreeImageToolkit.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/debug/libFreeImageToolkit.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/release/FreeImageToolkit.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/debug/FreeImageToolkit.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/libFreeImageToolkit.a
+#win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/release/libFreeImageToolkit.a
+#else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/debug/libFreeImageToolkit.a
+#else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/release/FreeImageToolkit.lib
+#else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/debug/FreeImageToolkit.lib
+#else:unix: PRE_TARGETDEPS += $$OUT_PWD/../FreeImageToolkit/libFreeImageToolkit.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../OpenEXR/release/ -lOpenEXR
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../OpenEXR/debug/ -lOpenEXR
