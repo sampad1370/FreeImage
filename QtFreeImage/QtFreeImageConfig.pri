@@ -2,15 +2,15 @@ outDir=$$OUT_PWD/
 ProFilePwd=$$_PRO_FILE_PWD_
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -std=c++11
-
-DEFINES+=__ANSI__
-
-unix: QMAKE_CXXFLAGS += -std=gnu++11
-
+unix: {
+    QMAKE_CXXFLAGS += -std=c++11
+    DEFINES+=__ANSI__
+    QMAKE_CXXFLAGS += -std=gnu++11
+}
 win32: {
     outDir~= s,/,\\,g
     ProFilePwd~= s,/,\\,g
+    DEFINES-=UNICODE
     #message($$outDir)
     #QMAKE_PRE_LINK=msbuild $$_PRO_FILE_PWD_\FreeImage\FreeImage.vs2022.sln /p:Configuration=Debug /p:OutDir=$$outDir/
 

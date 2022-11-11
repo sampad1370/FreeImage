@@ -29,7 +29,7 @@ Window {
                 onAccepted: {
                     if(fileDialog.files.length>0)
                     {
-                        var path=fileDialog.files[0].toString().replace("file://","")
+                        var path=fileDialog.files[0].toString()
                         loadImage(path);
                     }
                 }

@@ -4,12 +4,15 @@ QT-= gui core
 
 include(../QtFreeImageConfig.pri)
 
+win32:DEFINES+=LIBRAW_NODLL USE_JPEG USE_X3FTOOLS _CRT_SECURE_NO_WARNINGS
+
 INCLUDEPATH+= \
     ../../FreeImage/trunk/Source/LibRawLite/ \
     ../../FreeImage/trunk/Source/LibRawLite/dcraw \
     ../../FreeImage/trunk/Source/LibRawLite/internal \
     ../../FreeImage/trunk/Source/LibRawLite/libraw \
-    ../../FreeImage/trunk/Source/LibRawLite/src
+    ../../FreeImage/trunk/Source/LibRawLite/src \
+    ../../FreeImage/trunk/Source/LibJPEG/
 
 
 SOURCES+= \

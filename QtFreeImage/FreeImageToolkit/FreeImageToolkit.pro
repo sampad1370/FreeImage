@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += staticlib
+#CONFIG += staticlib
 QT-= gui core
 
 include(../QtFreeImageConfig.pri)

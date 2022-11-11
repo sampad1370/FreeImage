@@ -4,8 +4,11 @@ QT-= gui core
 TARGET=FreeImage
 
 include(../QtFreeImageConfig.pri)
-
-QMAKE_LFLAGS_SHLIB+=-fopenmp
+include(../FreeImageToolkit/FreeImageToolkit.pro)
+win32: {
+    DEFINES+=OPJ_STATIC FREEIMAGE_EXPORTS _CRT_SECURE_NO_DEPRECATE LIBRAW_NODLL
+}
+unix: QMAKE_LFLAGS_SHLIB+=-fopenmp
 SysRoot =
 ExtraLib =
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
@@ -263,3 +266,16 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../LibW
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../LibWebP/release/LibWebP.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../LibWebP/debug/LibWebP.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../LibWebP/libLibWebP.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ZLib/release/ -lZLib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ZLib/debug/ -lZLib
+else:unix: LIBS += -L$$OUT_PWD/../ZLib/ -lZLib
+
+INCLUDEPATH += $$PWD/../../FreeImage/trunk/Source/ZLib
+DEPENDPATH += $$PWD/../../FreeImage/trunk/Source/ZLib
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../ZLib/release/libZLib.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../ZLib/debug/libZLib.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../ZLib/release/ZLib.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../ZLib/debug/ZLib.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../ZLib/libZLib.a
