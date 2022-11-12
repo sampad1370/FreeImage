@@ -5,7 +5,6 @@ SUBDIRS += LibPNG \
     LibRawLite \
     FreeImage \
     MetaData \
-    FreeImageToolkit \
     LibJpeg \
     LibJXR \
     LibTIFF4 \
@@ -29,12 +28,11 @@ LibTIFF4.subdir = LibTIFF4
 ZLib.subdir = ZLib
 LibOpenJPEG.subdir = LibOpenJPEG
 LibWebP.subdir = LibWebP
-FreeImageToolkit.subdir = FreeImageToolkit
 MetaData.subdir = MetaData
 LibJpeg.subdir = LibJpeg
 OpenEXR.subdir = OpenEXR
 FreeImage.subdir = FreeImage
-FreeImage.depends = LibRawLite MetaData FreeImageToolkit LibJpeg LibJXR LibTIFF4 ZLib LibOpenJPEG LibWebP OpenEXR
+FreeImage.depends = LibRawLite MetaData LibJpeg LibJXR LibTIFF4 ZLib LibOpenJPEG LibWebP OpenEXR
 Examples.subdir = Examples
 Examples.depends = FreeImage
 

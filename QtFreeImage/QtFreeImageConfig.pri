@@ -2,19 +2,19 @@ outDir=$$OUT_PWD/
 ProFilePwd=$$_PRO_FILE_PWD_
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -std=c++11
-
-DEFINES+=__ANSI__
-
-unix: QMAKE_CXXFLAGS += -std=gnu++11
-
+unix:!mac: {
+    QMAKE_CXXFLAGS += -std=c++11
+    DEFINES+=__ANSI__
+    QMAKE_CXXFLAGS += -std=gnu++11
+}
 win32: {
     outDir~= s,/,\\,g
     ProFilePwd~= s,/,\\,g
+    DEFINES-=UNICODE
     #message($$outDir)
     #QMAKE_PRE_LINK=msbuild $$_PRO_FILE_PWD_\FreeImage\FreeImage.vs2022.sln /p:Configuration=Debug /p:OutDir=$$outDir/
 
-    QMAKE_POST_LINK=copy $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll)  $$shell_quote($$outDir\..\..\debug\FreeImaged.dll)
+    #QMAKE_POST_LINK=copy $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll)  $$shell_quote($$outDir\..\..\debug\FreeImaged.dll)
     #QMAKE_POST_LINK=copy $$shell_quote($$outDir\FreeImaged.dll) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.dll) && \
     #copy $$shell_quote($$outDir\FreeImaged.lib) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.lib) && \
     #copy $$shell_quote($$outDir\FreeImaged.pdb) $$shell_quote($$ProFilePwd\FreeImage\Dist\x64\FreeImaged.pdb)
@@ -56,7 +56,9 @@ win32: {
 
 #    QMAKE_PRE_LINK=make -C $$ProFilePwd/trunk/ \
 #    --makefile=$$ProFilePwd/trunk/Makefile.android
-} else:unix: {
+} else:mac: {
+    QMAKE_CFLAGS += -Os -fexceptions -fvisibility=hidden -DNO_LCMS -D__ANSI__
+    QMAKE_CXXFLAGS +=-Wno-ctor-dtor-privacy -D__ANSI__ -std=c++11 -stdlib=libc++ -Wc++11-narrowing
 #    QMAKE_PRE_LINK=make -C $$ProFilePwd/trunk/ \
 #    --makefile=$$ProFilePwd/trunk/Makefile
 }

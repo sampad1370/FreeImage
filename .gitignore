@@ -1,3 +1,5 @@
 build-*/
 .qtc_clangd/
 *.pro.user
+.vs/
+*.vcxproj.user

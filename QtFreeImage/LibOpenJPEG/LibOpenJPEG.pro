@@ -4,6 +4,8 @@ QT-= gui core
 
 include(../QtFreeImageConfig.pri)
 
+win32: DEFINES+=OPJ_STATIC _CRT_SECURE_NO_DEPRECATE
+
 INCLUDEPATH+=
 
 SOURCES+= \

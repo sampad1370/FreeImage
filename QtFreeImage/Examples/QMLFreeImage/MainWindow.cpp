@@ -40,6 +40,12 @@ QByteArray MainWindow::load(QString filename)
 	file.copy(newFilePath);
 	file.close();
 #endif
+
+#ifdef Q_OS_WINDOWS
+    newFilePath.replace("file:///","");
+#else
+    newFilePath.replace("file:///","/");
+#endif
 	// Get image format
 	FREE_IMAGE_FORMAT fif = FreeImage_GetFileType(newFilePath.toStdString().c_str(), 0);
 	if (fif == FIF_UNKNOWN)

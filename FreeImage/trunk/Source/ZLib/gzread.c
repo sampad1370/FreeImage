@@ -4,6 +4,10 @@
  */
 
 #include "gzguts.h"
+#include <stdio.h>
+#if !defined(WIN32) && !defined(WIN64)
+#include <unistd.h>
+#endif
 
 /* Local functions */
 local int gz_load OF((gz_statep, unsigned char *, unsigned, unsigned *));

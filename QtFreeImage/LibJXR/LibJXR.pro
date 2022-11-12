@@ -4,6 +4,8 @@ QT-= gui core
 
 include(../QtFreeImageConfig.pri)
 
+win32:DEFINES+=DISABLE_PERF_MEASUREMENT
+
 INCLUDEPATH+=  \
     ../../FreeImage/trunk/Source/LibJXR \
     ../../FreeImage/trunk/Source/LibJXR/common/include \
