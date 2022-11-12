@@ -13,9 +13,9 @@ contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     SysRoot = $(ANDROID_NDK_ROOT)/platforms/android-$$ANDROID_API_VERSION/arch-arm/
     ExtraLib = $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
     QMAKE_PRE_LINK += cp $$ExtraLib $$OUT_PWD/../
-    #ExtraLib = $$OUT_PWD/android-build/libs/armeabi-v7a/libomp.so
-    LIBS+= -L$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/armeabi-v7a/ -lomp \
-    $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/armeabi-v7a/libomp.so
+    #ExtraLib = $$OUT_PWD/android-build/libs/arm/libomp.so
+    LIBS+= -L$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/ -lomp \
+    $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
 } else: contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     message($$_PRO_FILE_ : build for v8a)
     SysRoot = $(ANDROID_NDK_ROOT)/platforms/android-$$ANDROID_API_VERSION/arch-arm64/
