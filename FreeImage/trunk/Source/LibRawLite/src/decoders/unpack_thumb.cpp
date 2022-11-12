@@ -14,7 +14,9 @@
 
 #include "../../internal/libraw_cxx_defs.h"
 
+#if !defined(WIN32) && !defined(WIN64)
 #include <unistd.h>
+#endif
 
 #ifndef NO_JPEG
 struct jpegErrorManager

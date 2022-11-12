@@ -16,7 +16,9 @@
 
 #define _XOPEN_SOURCE
 #include <stdlib.h>
+#if !defined(WIN32) && !defined(WIN64)
 #include <unistd.h>
+#endif
 
 inline unsigned int __DNG_HalfToFloat(ushort halfValue)
 {
