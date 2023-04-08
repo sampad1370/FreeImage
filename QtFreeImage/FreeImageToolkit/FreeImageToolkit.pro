@@ -1,8 +1,3 @@
-TEMPLATE = lib
-#CONFIG += staticlib
-QT-= gui core
-
-include(../QtFreeImageConfig.pri)
 
 INCLUDEPATH+= \
     ../../FreeImage/trunk/ \
