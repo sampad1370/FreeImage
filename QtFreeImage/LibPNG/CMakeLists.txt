@@ -1,0 +1,109 @@
+qt_add_library(LibPNG
+    ../../FreeImage/trunk/Source/LibPNG/png.c ../../FreeImage/trunk/Source/LibPNG/png.h
+    ../../FreeImage/trunk/Source/LibPNG/pngconf.h
+    ../../FreeImage/trunk/Source/LibPNG/pngdebug.h
+    ../../FreeImage/trunk/Source/LibPNG/pngerror.c
+    ../../FreeImage/trunk/Source/LibPNG/pngget.c
+    ../../FreeImage/trunk/Source/LibPNG/pnginfo.h
+    ../../FreeImage/trunk/Source/LibPNG/pnglibconf.h
+    ../../FreeImage/trunk/Source/LibPNG/pngmem.c
+    ../../FreeImage/trunk/Source/LibPNG/pngpread.c
+    ../../FreeImage/trunk/Source/LibPNG/pngpriv.h
+    ../../FreeImage/trunk/Source/LibPNG/pngread.c
+    ../../FreeImage/trunk/Source/LibPNG/pngrio.c
+    ../../FreeImage/trunk/Source/LibPNG/pngrtran.c
+    ../../FreeImage/trunk/Source/LibPNG/pngrutil.c
+    ../../FreeImage/trunk/Source/LibPNG/pngset.c
+    ../../FreeImage/trunk/Source/LibPNG/pngstruct.h
+    ../../FreeImage/trunk/Source/LibPNG/pngtest.c
+    ../../FreeImage/trunk/Source/LibPNG/pngtrans.c
+    ../../FreeImage/trunk/Source/LibPNG/pngwio.c
+    ../../FreeImage/trunk/Source/LibPNG/pngwrite.c
+    ../../FreeImage/trunk/Source/LibPNG/pngwtran.c
+    ../../FreeImage/trunk/Source/LibPNG/pngwutil.c
+)
+target_include_directories(LibPNG PUBLIC
+    ../../FreeImage/trunk/Source/ZLib
+)
+
+target_compile_definitions(LibPNG PUBLIC
+    PNG_ARM_NEON_OPT=0
+)
+
+target_link_libraries(LibPNG PUBLIC
+    Qt::Core
+    Qt::Gui
+)
+
+if(UNIX AND NOT APPLE)
+    target_compile_definitions(LibPNG PUBLIC
+        __ANSI__
+    )
+
+    target_compile_options(LibPNG
+        -std=c++11
+        -std=gnu++11
+    )
+endif()
+
+if(ANDROID)
+    target_include_directories(LibPNG PUBLIC
+        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include
+        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include/backward
+        $(ANDROID_NDK_ROOT)/sysroot/usr/include
+    )
+
+    target_compile_definitions(LibPNG PUBLIC
+        DISABLE_PERF_MEASUREMENT
+        __ANDROID_API__=28
+        __ANSI__
+    )
+
+    target_compile_options(LibPNG
+        --sysroot
+        -Wa,--noexecstack
+        -Werror=format-security
+        -Wformat
+        -Wno-attributes
+        -fPIE
+        -ffast-math
+        -ffunction-sections
+        -fno-strict-aliasing
+        -fopenmp
+        -fstack-protector-strong
+        -funwind-tables
+        -no-canonical-prefixes
+        -std=c++11
+    )
+endif()
+
+if(ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+    target_include_directories(LibPNG PUBLIC
+        $(ANDROID_NDK_ROOT)/sysroot/usr/include/arm-linux-androideabi
+    )
+endif()
+
+if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+    target_include_directories(LibPNG PUBLIC
+        $(ANDROID_NDK_ROOT)/sysroot/usr/include/aarch64-linux-android
+    )
+endif()
+
+if(APPLE)
+    target_compile_definitions(LibPNG PUBLIC
+        __ANSI__
+    )
+
+    target_compile_options(LibPNG
+        -Wc++11-narrowing
+        -Wno-ctor-dtor-privacy
+        -std=c++11
+        -stdlib=libc++
+    )
+endif()
+
+install(TARGETS LibPNG
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
