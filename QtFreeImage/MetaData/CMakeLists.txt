@@ -1,4 +1,4 @@
-qt_add_library(MetaData
+add_library(MetaData STATIC
     ../../FreeImage/trunk/Source/Metadata/Exif.cpp
     ../../FreeImage/trunk/Source/Metadata/FIRational.cpp ../../FreeImage/trunk/Source/Metadata/FIRational.h
     ../../FreeImage/trunk/Source/Metadata/FreeImageTag.cpp ../../FreeImage/trunk/Source/Metadata/FreeImageTag.h
@@ -16,14 +16,16 @@ target_include_directories(MetaData PUBLIC
 target_link_libraries(MetaData PUBLIC
     Qt::Core
     Qt::Gui
+    FreeImageToolkit
+    LibTIFF4
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(MetaData PUBLIC
+    target_compile_definitions(MetaData PRIVATE
         __ANSI__
     )
 
-    target_compile_options(MetaData
+    target_compile_options(MetaData PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -36,13 +38,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(MetaData PUBLIC
+    target_compile_definitions(MetaData PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(MetaData
+    target_compile_options(MetaData PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -73,11 +75,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(MetaData PUBLIC
+    target_compile_definitions(MetaData PRIVATE
         __ANSI__
     )
 
-    target_compile_options(MetaData
+    target_compile_options(MetaData PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

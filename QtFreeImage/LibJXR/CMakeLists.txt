@@ -1,4 +1,4 @@
-qt_add_library(LibJXR
+add_library(LibJXR STATIC
     ../../FreeImage/trunk/Source/LibJXR/common/include/guiddef.h
     ../../FreeImage/trunk/Source/LibJXR/common/include/wmsal.h
     ../../FreeImage/trunk/Source/LibJXR/common/include/wmspecstring.h
@@ -55,11 +55,11 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibJXR PUBLIC
+    target_compile_definitions(LibJXR PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibJXR
+    target_compile_options(LibJXR PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -72,13 +72,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibJXR PUBLIC
+    target_compile_definitions(LibJXR PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibJXR
+    target_compile_options(LibJXR PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security

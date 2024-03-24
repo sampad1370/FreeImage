@@ -1,4 +1,4 @@
-qt_add_library(LibJpeg
+add_library(LibJpeg STATIC
     ../../FreeImage/trunk/Source/LibJPEG/cderror.h
     ../../FreeImage/trunk/Source/LibJPEG/cdjpeg.h
     ../../FreeImage/trunk/Source/LibJPEG/jaricom.c
@@ -69,11 +69,11 @@ target_link_libraries(LibJpeg PUBLIC
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibJpeg PUBLIC
+    target_compile_definitions(LibJpeg PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibJpeg
+    target_compile_options(LibJpeg PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -86,13 +86,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibJpeg PUBLIC
+    target_compile_definitions(LibJpeg PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibJpeg
+    target_compile_options(LibJpeg PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -123,11 +123,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(LibJpeg PUBLIC
+    target_compile_definitions(LibJpeg PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibJpeg
+    target_compile_options(LibJpeg PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

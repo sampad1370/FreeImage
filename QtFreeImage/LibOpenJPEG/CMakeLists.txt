@@ -1,4 +1,4 @@
-qt_add_library(LibOpenJPEG
+add_library(LibOpenJPEG STATIC
     ../../FreeImage/trunk/Source/LibOpenJPEG/bio.c ../../FreeImage/trunk/Source/LibOpenJPEG/bio.h
     ../../FreeImage/trunk/Source/LibOpenJPEG/cidx_manager.h
     ../../FreeImage/trunk/Source/LibOpenJPEG/cio.c ../../FreeImage/trunk/Source/LibOpenJPEG/cio.h
@@ -43,11 +43,11 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibOpenJPEG PUBLIC
+    target_compile_definitions(LibOpenJPEG PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibOpenJPEG
+    target_compile_options(LibOpenJPEG PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -60,13 +60,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibOpenJPEG PUBLIC
+    target_compile_definitions(LibOpenJPEG PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibOpenJPEG
+    target_compile_options(LibOpenJPEG PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -97,11 +97,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(LibOpenJPEG PUBLIC
+    target_compile_definitions(LibOpenJPEG PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibOpenJPEG
+    target_compile_options(LibOpenJPEG PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

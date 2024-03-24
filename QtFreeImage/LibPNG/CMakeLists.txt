@@ -1,4 +1,8 @@
-qt_add_library(LibPNG
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+add_library(LibPNG STATIC
     ../../FreeImage/trunk/Source/LibPNG/png.c ../../FreeImage/trunk/Source/LibPNG/png.h
     ../../FreeImage/trunk/Source/LibPNG/pngconf.h
     ../../FreeImage/trunk/Source/LibPNG/pngdebug.h
@@ -36,13 +40,11 @@ target_link_libraries(LibPNG PUBLIC
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibPNG PUBLIC
+    target_compile_definitions(LibPNG PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibPNG
-        -std=c++11
-        -std=gnu++11
+    target_compile_options(LibPNG PRIVATE   -std=c++11 -std=gnu++11
     )
 endif()
 
@@ -53,13 +55,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibPNG PUBLIC
+    target_compile_definitions(LibPNG PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibPNG
+    target_compile_options(LibPNG PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -90,11 +92,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(LibPNG PUBLIC
+    target_compile_definitions(LibPNG PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibPNG
+    target_compile_options(LibPNG PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

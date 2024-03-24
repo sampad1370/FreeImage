@@ -1,4 +1,4 @@
-qt_add_library(FreeImage
+add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/CacheFile.h
     ../../FreeImage/trunk/Source/FreeImage.h
     ../../FreeImage/trunk/Source/FreeImage/BitmapAccess.cpp
@@ -132,11 +132,11 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(FreeImage PUBLIC
+    target_compile_definitions(FreeImage PRIVATE
         __ANSI__
     )
 
-    target_compile_options(FreeImage
+    target_compile_options(FreeImage PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -158,7 +158,7 @@ if(ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___cont
     )
 endif()
 
-if(WIN32 AND CONFIG(release,debug OR release))
+if(WIN32)
     target_link_libraries(FreeImage PUBLIC
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/release/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/release/
@@ -170,6 +170,7 @@ if(WIN32 AND CONFIG(release,debug OR release))
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/release/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/release/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/release/
+	FreeImageToolkit
         LibJXR
         LibJpeg
         LibOpenJPEG
@@ -183,7 +184,7 @@ if(WIN32 AND CONFIG(release,debug OR release))
     )
 endif()
 
-if((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (WIN32 AND CONFIG(debug,debug OR release)))
+if(NOT WIN32)
     target_link_libraries(FreeImage PUBLIC
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/debug/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/debug/
@@ -195,6 +196,7 @@ if((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (WIN32 AND CONFIG(debu
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/debug/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/debug/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/debug/
+	FreeImageToolkit
         LibJXR
         LibJpeg
         LibOpenJPEG
@@ -208,7 +210,7 @@ if((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (WIN32 AND CONFIG(debu
     )
 endif()
 
-if(((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (NOT (WIN32 AND CONFIG(debug,debug OR release)))) AND (UNIX))
+if(UNIX)
     target_link_libraries(FreeImage PUBLIC
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/
@@ -220,6 +222,7 @@ if(((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (NOT (WIN32 AND CONFI
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/
         # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/
+	FreeImageToolkit
         LibJXR
         LibJpeg
         LibOpenJPEG

@@ -1,4 +1,4 @@
-qt_add_library(LibRawLite
+add_library(LibRawLite STATIC
     ../../FreeImage/trunk/Source/LibRawLite/internal/dcraw_defs.h
     ../../FreeImage/trunk/Source/LibRawLite/internal/dcraw_fileio_defs.h
     ../../FreeImage/trunk/Source/LibRawLite/internal/defines.h
@@ -112,11 +112,11 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibRawLite PUBLIC
+    target_compile_definitions(LibRawLite PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibRawLite
+    target_compile_options(LibRawLite PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -129,13 +129,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibRawLite PUBLIC
+    target_compile_definitions(LibRawLite PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibRawLite
+    target_compile_options(LibRawLite PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security

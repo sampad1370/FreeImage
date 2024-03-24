@@ -1,4 +1,4 @@
-qt_add_library(LibTIFF4
+add_library(LibTIFF4 STATIC
     ../../FreeImage/trunk/Source/LibTIFF4/t4.h
     ../../FreeImage/trunk/Source/LibTIFF4/tif_aux.c
     ../../FreeImage/trunk/Source/LibTIFF4/tif_close.c
@@ -63,11 +63,11 @@ target_link_libraries(LibTIFF4 PUBLIC
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(LibTIFF4 PUBLIC
+    target_compile_definitions(LibTIFF4 PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibTIFF4
+    target_compile_options(LibTIFF4 PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -80,13 +80,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(LibTIFF4 PUBLIC
+    target_compile_definitions(LibTIFF4 PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(LibTIFF4
+    target_compile_options(LibTIFF4 PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -117,11 +117,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(LibTIFF4 PUBLIC
+    target_compile_definitions(LibTIFF4 PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibTIFF4
+    target_compile_options(LibTIFF4 PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

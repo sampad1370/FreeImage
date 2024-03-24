@@ -1,4 +1,4 @@
-qt_add_library(ZLib
+add_library(ZLib STATIC
     ../../FreeImage/trunk/Source/ZLib/adler32.c
     ../../FreeImage/trunk/Source/ZLib/compress.c
     ../../FreeImage/trunk/Source/ZLib/crc32.c ../../FreeImage/trunk/Source/ZLib/crc32.h
@@ -25,11 +25,11 @@ target_link_libraries(ZLib PUBLIC
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(ZLib PUBLIC
+    target_compile_definitions(ZLib PRIVATE
         __ANSI__
     )
 
-    target_compile_options(ZLib
+    target_compile_options(ZLib PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -42,13 +42,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(ZLib PUBLIC
+    target_compile_definitions(ZLib PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(ZLib
+    target_compile_options(ZLib PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -79,11 +79,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(ZLib PUBLIC
+    target_compile_definitions(ZLib PRIVATE
         __ANSI__
     )
 
-    target_compile_options(ZLib
+    target_compile_options(ZLib PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

@@ -1,14 +1,17 @@
-qt_add_executable(QMLFreeImage WIN32 MACOSX_BUNDLE
+set(QT_QML_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR})
+add_executable(QMLFreeImage WIN32 MACOSX_BUNDLE
     MainWindow.cpp MainWindow.h
     main.cpp
+    qml.qrc
+    main.qml
 )
-qt_add_qml_module(QMLFreeImage
-    URI QMLFreeImage
-    VERSION ${PROJECT_VERSION}
-    QML_FILES
-        main.qml
-    NO_RESOURCE_TARGET_PATH
-)
+# add_qml_module(QMLFreeImage
+#     URI QMLFreeImage
+#     VERSION ${PROJECT_VERSION}
+#     QML_FILES
+#         main.qml
+#     NO_RESOURCE_TARGET_PATH
+# )
 
 # Avoid collision between executable name and QML module directory (QTBUG-98568).
 if(NOT WIN32 AND NOT APPLE)
@@ -28,56 +31,51 @@ target_link_libraries(QMLFreeImage PRIVATE
 )
 
 if(ANDROID)
-    target_link_libraries(QMLFreeImage PRIVATE
-        Qt::AndroidExtras
+    target_link_libraries(QMLFreeImage PUBLIC
+	Qt::AndroidExtras
     )
 endif()
 
-if(WIN32 AND CONFIG(release,debug OR release))
-    target_link_libraries(QMLFreeImage PRIVATE
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../../FreeImage/release/
-        FreeImage
-    )
-endif()
-
-if((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (WIN32 AND CONFIG(debug,debug OR release)))
-    target_link_libraries(QMLFreeImage PRIVATE
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../../FreeImage/debug/
-        FreeImage
-    )
-endif()
-
-if(((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (NOT (WIN32 AND CONFIG(debug,debug OR release)))) AND (UNIX AND NOT ANDROID))
-    target_link_libraries(QMLFreeImage PRIVATE
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../../FreeImage/
-        FreeImage
-    )
-endif()
-
-if((((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (NOT (WIN32 AND CONFIG(debug,debug OR release)))) AND (NOT (UNIX AND NOT ANDROID))) AND (ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a))
-    target_link_libraries(QMLFreeImage PRIVATE
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../../FreeImage/
-        FreeImage_armeabi-v7a
-    )
-endif()
-
-if(((((NOT (WIN32 AND CONFIG(release,debug OR release))) AND (NOT (WIN32 AND CONFIG(debug,debug OR release)))) AND (NOT (UNIX AND NOT ANDROID))) AND (NOT (ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a))) AND (ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a))
-    target_link_libraries(QMLFreeImage PRIVATE
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../../FreeImage/
-        FreeImage_arm64-v8a
-    )
-endif()
+target_link_libraries(QMLFreeImage PUBLIC FreeImage)
 
 install(TARGETS QMLFreeImage
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-qt_generate_deploy_qml_app_script(
-    TARGET QMLFreeImage
-    FILENAME_VARIABLE deploy_script
-    NO_UNSUPPORTED_PLATFORM_ERROR
-    DEPLOY_USER_QML_MODULES_ON_UNSUPPORTED_PLATFORM
-    MACOS_BUNDLE_POST_BUILD
+# qt_generate_deploy_qml_app_script(
+#     TARGET QMLFreeImage
+#     FILENAME_VARIABLE deploy_script
+#     NO_UNSUPPORTED_PLATFORM_ERROR
+#     DEPLOY_USER_QML_MODULES_ON_UNSUPPORTED_PLATFORM
+#     MACOS_BUNDLE_POST_BUILD
+# )
+# install(SCRIPT ${deploy_script})
+install(
+    IMPORTED_RUNTIME_ARTIFACTS QMLFreeImage
+    DESTINATION ${CMAKE_BINARY_DIR}/bin
 )
-install(SCRIPT ${deploy_script})
+set_target_properties(QMLFreeImage PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+)
+# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
+# If you are developing for iOS or macOS you should consider setting an
+# explicit, fixed bundle identifier manually though.
+if(QT_VERSION_MAJOR LESS 6)
+    set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.testtemp)
+endif()
+set_target_properties(QMLFreeImage PROPERTIES
+    ${BUNDLE_ID_OPTION}
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+)
+
+install(TARGETS QMLFreeImage
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

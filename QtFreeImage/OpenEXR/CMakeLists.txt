@@ -1,4 +1,4 @@
-qt_add_library(OpenEXR
+add_library(OpenEXR STATIC
     ../../FreeImage/trunk/Source/OpenEXR/Half/eLut.h
     ../../FreeImage/trunk/Source/OpenEXR/Half/half.cpp ../../FreeImage/trunk/Source/OpenEXR/Half/half.h
     ../../FreeImage/trunk/Source/OpenEXR/Half/halfExport.h
@@ -189,11 +189,11 @@ target_link_libraries(OpenEXR PUBLIC
 )
 
 if(UNIX AND NOT APPLE)
-    target_compile_definitions(OpenEXR PUBLIC
+    target_compile_definitions(OpenEXR PRIVATE
         __ANSI__
     )
 
-    target_compile_options(OpenEXR
+    target_compile_options(OpenEXR PRIVATE
         -std=c++11
         -std=gnu++11
     )
@@ -206,13 +206,13 @@ if(ANDROID)
         $(ANDROID_NDK_ROOT)/sysroot/usr/include
     )
 
-    target_compile_definitions(OpenEXR PUBLIC
+    target_compile_definitions(OpenEXR PRIVATE
         DISABLE_PERF_MEASUREMENT
         __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(OpenEXR
+    target_compile_options(OpenEXR PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -243,11 +243,11 @@ if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET
 endif()
 
 if(APPLE)
-    target_compile_definitions(OpenEXR PUBLIC
+    target_compile_definitions(OpenEXR PRIVATE
         __ANSI__
     )
 
-    target_compile_options(OpenEXR
+    target_compile_options(OpenEXR PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11
