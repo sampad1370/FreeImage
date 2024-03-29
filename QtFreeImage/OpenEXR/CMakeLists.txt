@@ -198,6 +198,12 @@ if(UNIX AND NOT APPLE)
         -std=gnu++11
     )
 endif()
+IF(WIN32)
+    set(CMAKE_CXX_STANDARD 14)
+    target_compile_definitions(OpenEXR PRIVATE
+        /std:c++14
+    )
+endif()
 
 if(ANDROID)
     target_include_directories(OpenEXR PUBLIC
