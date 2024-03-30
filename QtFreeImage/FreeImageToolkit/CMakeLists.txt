@@ -25,3 +25,12 @@ target_link_libraries(FreeImageToolkit PRIVATE
     Qt::Core
     Qt::Gui
 )
+
+if(WIN32)
+    target_compile_definitions(FreeImageToolkit PUBLIC
+        FREEIMAGE_EXPORTS
+        LIBRAW_NODLL
+        OPJ_STATIC
+        _CRT_SECURE_NO_DEPRECATE
+    )
+endif()
