@@ -1,3 +1,4 @@
+set(CMAKE_CXX_STANDARD 11)
 add_library(MetaData STATIC
     ../../FreeImage/trunk/Source/Metadata/Exif.cpp
     ../../FreeImage/trunk/Source/Metadata/FIRational.cpp ../../FreeImage/trunk/Source/Metadata/FIRational.h
@@ -20,7 +21,7 @@ target_link_libraries(MetaData PUBLIC
     LibTIFF4
 )
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(MetaData PRIVATE
         __ANSI__
     )
@@ -33,14 +34,13 @@ endif()
 
 if(ANDROID)
     target_include_directories(MetaData PUBLIC
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include/backward
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+	${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(MetaData PRIVATE
         DISABLE_PERF_MEASUREMENT
-        __ANDROID_API__=28
         __ANSI__
     )
 
@@ -58,19 +58,18 @@ if(ANDROID)
         -fstack-protector-strong
         -funwind-tables
         -no-canonical-prefixes
-        -std=c++11
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(MetaData PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/arm-linux-androideabi
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(MetaData PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/aarch64-linux-android
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 

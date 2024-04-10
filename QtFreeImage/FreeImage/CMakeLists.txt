@@ -1,3 +1,5 @@
+set(CMAKE_CXX_STANDARD 11)
+
 add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/CacheFile.h
     ../../FreeImage/trunk/Source/FreeImage.h
@@ -131,7 +133,7 @@ if(WIN32)
     )
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(FreeImage PRIVATE
         __ANSI__
     )
@@ -144,16 +146,16 @@ endif()
 
 if(ANDROID_TARGET_ARCH___contains___armeabi-v7a)
     target_link_libraries(FreeImage PUBLIC
-        # Remove: L$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/
-        $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
+	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/
+	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
         omp
     )
 endif()
 
 if(ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
     target_link_libraries(FreeImage PUBLIC
-        # Remove: L$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/
-        $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/libomp.so
+	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/
+	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/libomp.so
         omp
     )
 endif()
@@ -238,18 +240,17 @@ endif()
 
 if(ANDROID)
     target_include_directories(FreeImage PUBLIC
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include/backward
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+	${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(FreeImage PUBLIC
         DISABLE_PERF_MEASUREMENT
-        __ANDROID_API__=28
         __ANSI__
     )
 
-    target_compile_options(FreeImage
+    target_compile_options(FreeImage PRIVATE
         --sysroot
         -Wa,--noexecstack
         -Werror=format-security
@@ -263,19 +264,18 @@ if(ANDROID)
         -fstack-protector-strong
         -funwind-tables
         -no-canonical-prefixes
-        -std=c++11
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(FreeImage PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/arm-linux-androideabi
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(FreeImage PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/aarch64-linux-android
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 
@@ -284,7 +284,7 @@ if(APPLE)
         __ANSI__
     )
 
-    target_compile_options(FreeImage
+    target_compile_options(FreeImage PRIVATE
         -Wc++11-narrowing
         -Wno-ctor-dtor-privacy
         -std=c++11

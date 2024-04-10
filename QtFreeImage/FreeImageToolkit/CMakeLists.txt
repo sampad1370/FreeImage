@@ -1,4 +1,4 @@
-
+set(CMAKE_CXX_STANDARD 11)
 
 add_library(FreeImageToolkit STATIC
     ../../FreeImage/trunk/Source/FreeImageToolkit/BSplineRotate.cpp

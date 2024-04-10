@@ -1,3 +1,4 @@
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -39,25 +40,25 @@ target_link_libraries(LibPNG PUBLIC
     Qt::Gui
 )
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(LibPNG PRIVATE
         __ANSI__
     )
 
-    target_compile_options(LibPNG PRIVATE   -std=c++11 -std=gnu++11
+    target_compile_options(LibPNG PRIVATE
+	-std=c++11 -std=gnu++11
     )
 endif()
 
 if(ANDROID)
     target_include_directories(LibPNG PUBLIC
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include
-        $(ANDROID_NDK_ROOT)/sources/cxx-stl/llvm-libc++/include/backward
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+	${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(LibPNG PRIVATE
         DISABLE_PERF_MEASUREMENT
-        __ANDROID_API__=28
         __ANSI__
     )
 
@@ -75,19 +76,18 @@ if(ANDROID)
         -fstack-protector-strong
         -funwind-tables
         -no-canonical-prefixes
-        -std=c++11
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(LibPNG PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/arm-linux-androideabi
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
-if(ANDROID AND ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(LibPNG PUBLIC
-        $(ANDROID_NDK_ROOT)/sysroot/usr/include/aarch64-linux-android
+	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 
