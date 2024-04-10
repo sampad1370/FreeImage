@@ -144,7 +144,7 @@ if(UNIX AND NOT APPLE AND NOT ANDROID)
     )
 endif()
 
-if(ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_link_libraries(FreeImage PUBLIC
 	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/
 	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
@@ -152,7 +152,7 @@ if(ANDROID_TARGET_ARCH___contains___armeabi-v7a)
     )
 endif()
 
-if(ANDROID_TARGET_ARCH___contains___arm64-v8a AND NOT ANDROID_TARGET_ARCH___contains___armeabi-v7a)
+if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_link_libraries(FreeImage PUBLIC
 	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/
 	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/libomp.so
