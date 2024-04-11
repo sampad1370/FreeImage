@@ -15,8 +15,6 @@ target_include_directories(MetaData PUBLIC
 )
 
 target_link_libraries(MetaData PUBLIC
-    Qt::Core
-    Qt::Gui
     FreeImageToolkit
     LibTIFF4
 )

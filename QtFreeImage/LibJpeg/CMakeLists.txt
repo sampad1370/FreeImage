@@ -64,11 +64,6 @@ target_include_directories(LibJpeg PUBLIC
     ../../FreeImage/trunk/Source/Metadata
 )
 
-target_link_libraries(LibJpeg PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(LibJpeg PRIVATE
         __ANSI__

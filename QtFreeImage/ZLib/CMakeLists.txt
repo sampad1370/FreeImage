@@ -20,10 +20,6 @@ add_library(ZLib STATIC
     ../../FreeImage/trunk/Source/ZLib/zlib.h
     ../../FreeImage/trunk/Source/ZLib/zutil.c ../../FreeImage/trunk/Source/ZLib/zutil.h
 )
-target_link_libraries(ZLib PUBLIC
-    Qt::Core
-    Qt::Gui
-)
 
 if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(ZLib PRIVATE

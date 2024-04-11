@@ -147,11 +147,6 @@ target_include_directories(LibWebP PUBLIC
     ../../FreeImage/trunk/Source/LibWebP
 )
 
-target_link_libraries(LibWebP PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(LibWebP PRIVATE
         __ANSI__

@@ -58,11 +58,6 @@ target_include_directories(LibTIFF4 PUBLIC
     ../../FreeImage/trunk/Source/ZLib
 )
 
-target_link_libraries(LibTIFF4 PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(LibTIFF4 PRIVATE
         __ANSI__

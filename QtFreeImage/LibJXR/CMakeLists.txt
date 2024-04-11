@@ -44,11 +44,6 @@ target_include_directories(LibJXR PUBLIC
     ../../FreeImage/trunk/Source/LibJXR/jxrgluelib
 )
 
-target_link_libraries(LibJXR PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(WIN32)
     target_compile_definitions(LibJXR PUBLIC
         DISABLE_PERF_MEASUREMENT

@@ -98,11 +98,6 @@ target_include_directories(LibRawLite PUBLIC
     ../../FreeImage/trunk/Source/LibRawLite/src
 )
 
-target_link_libraries(LibRawLite PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(WIN32)
     target_compile_definitions(LibRawLite PUBLIC
         LIBRAW_NODLL

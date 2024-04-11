@@ -31,10 +31,6 @@ add_library(LibOpenJPEG STATIC
     ../../FreeImage/trunk/Source/LibOpenJPEG/tcd.c ../../FreeImage/trunk/Source/LibOpenJPEG/tcd.h
     ../../FreeImage/trunk/Source/LibOpenJPEG/tgt.c ../../FreeImage/trunk/Source/LibOpenJPEG/tgt.h
 )
-target_link_libraries(LibOpenJPEG PUBLIC
-    Qt::Core
-    Qt::Gui
-)
 
 if(WIN32)
     target_compile_definitions(LibOpenJPEG PUBLIC

@@ -184,11 +184,6 @@ target_include_directories(OpenEXR PUBLIC
     ../../FreeImage/trunk/Source/ZLib
 )
 
-target_link_libraries(OpenEXR PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_compile_definitions(OpenEXR PRIVATE
         __ANSI__

@@ -1,7 +1,4 @@
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
 add_library(LibPNG STATIC
     ../../FreeImage/trunk/Source/LibPNG/png.c ../../FreeImage/trunk/Source/LibPNG/png.h
@@ -33,11 +30,6 @@ target_include_directories(LibPNG PUBLIC
 
 target_compile_definitions(LibPNG PUBLIC
     PNG_ARM_NEON_OPT=0
-)
-
-target_link_libraries(LibPNG PUBLIC
-    Qt::Core
-    Qt::Gui
 )
 
 if(UNIX AND NOT APPLE AND NOT ANDROID)

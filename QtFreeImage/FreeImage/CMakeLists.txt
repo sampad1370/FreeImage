@@ -119,11 +119,6 @@ target_include_directories(FreeImage PUBLIC
     ../../FreeImage/trunk/Source/ZLib ../../FreeImage/trunk/Source/ZLib
 )
 
-target_link_libraries(FreeImage PUBLIC
-    Qt::Core
-    Qt::Gui
-)
-
 if(WIN32)
     target_compile_definitions(FreeImage PUBLIC
         FREEIMAGE_EXPORTS
