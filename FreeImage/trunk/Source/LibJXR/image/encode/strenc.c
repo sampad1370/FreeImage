@@ -489,8 +489,10 @@ Int StrIOEncInit(CWMImageStrCodec* pSC)
                 pSC->ppTempFile[i] = (char *)malloc(FILENAME_MAX * sizeof(char));
                 if(pSC->ppTempFile[i] == NULL) return ICERR_ERROR;
 
-                if ((pFilename = tmpnam(NULL)) == NULL)
-                    return ICERR_ERROR;                
+				char templatebuf[80];
+				pFilename = mkdtemp(strcpy(templatebuf, "/tmp/mkprogXXXXXX"));
+				if (pFilename == NULL)
+					return ICERR_ERROR;                
                 strcpy(pSC->ppTempFile[i], pFilename);
 #endif
                 if(CreateWS_File(pSC->ppWStream + i, pFilename, "w+b") != ICERR_OK) return ICERR_ERROR;                
