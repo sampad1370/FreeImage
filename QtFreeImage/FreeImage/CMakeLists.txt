@@ -1,5 +1,6 @@
 set(CMAKE_CXX_STANDARD 11)
 
+
 add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/CacheFile.h
     ../../FreeImage/trunk/Source/FreeImage.h
@@ -21,7 +22,6 @@ add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/FreeImage/ConversionType.cpp
     ../../FreeImage/trunk/Source/FreeImage/ConversionUINT16.cpp
     ../../FreeImage/trunk/Source/FreeImage/FreeImage.cpp
-    ../../FreeImage/trunk/Source/FreeImage/FreeImageC.c
     ../../FreeImage/trunk/Source/FreeImage/FreeImageIO.cpp
     ../../FreeImage/trunk/Source/FreeImage/GetType.cpp
     ../../FreeImage/trunk/Source/FreeImage/Halftoning.cpp
@@ -34,11 +34,12 @@ add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/FreeImage/PSDParser.cpp ../../FreeImage/trunk/Source/FreeImage/PSDParser.h
     ../../FreeImage/trunk/Source/FreeImage/PixelAccess.cpp
     ../../FreeImage/trunk/Source/FreeImage/Plugin.cpp
+    ../../FreeImage/trunk/Source/FreeImage/PluginTIFF.cpp
+    ../../FreeImage/trunk/Source/FreeImage/PluginG3.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginBMP.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginCUT.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginDDS.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginEXR.cpp
-    ../../FreeImage/trunk/Source/FreeImage/PluginG3.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginGIF.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginHDR.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginICO.cpp
@@ -61,7 +62,6 @@ add_library(FreeImage STATIC
     ../../FreeImage/trunk/Source/FreeImage/PluginRAW.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginSGI.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginTARGA.cpp
-    ../../FreeImage/trunk/Source/FreeImage/PluginTIFF.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginWBMP.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginWebP.cpp
     ../../FreeImage/trunk/Source/FreeImage/PluginXBM.cpp
@@ -141,103 +141,54 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_link_libraries(FreeImage PUBLIC
-	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/
-	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
+        # Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/
+        ${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm/libomp.so
         omp
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_link_libraries(FreeImage PUBLIC
-	# Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/
-	${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/libomp.so
+        # Remove: L${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/
+        ${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/aarch64/libomp.so
         omp
     )
 endif()
 
-if(WIN32)
-    target_link_libraries(FreeImage PUBLIC
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibOpenJPEG/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibPNG/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibRawLite/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibTIFF4/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibWebP/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/release/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/release/
-	FreeImageToolkit
-        LibJXR
-        LibJpeg
-        LibOpenJPEG
-        LibPNG
-        LibRawLite
-        LibTIFF4
-        LibWebP
-        MetaData
-        OpenEXR
-        ZLib
-    )
+
+if(UseTIFFLib)
+    set(OtherPlugins LibTIFF4)
 endif()
 
-if(NOT WIN32)
-    target_link_libraries(FreeImage PUBLIC
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibOpenJPEG/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibPNG/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibRawLite/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibTIFF4/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibWebP/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/debug/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/debug/
-	FreeImageToolkit
-        LibJXR
-        LibJpeg
-        LibOpenJPEG
-        LibPNG
-        LibRawLite
-        LibTIFF4
-        LibWebP
-        MetaData
-        OpenEXR
-        ZLib
-    )
-endif()
-
-if(UNIX)
-    target_link_libraries(FreeImage PUBLIC
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibOpenJPEG/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibPNG/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibRawLite/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibTIFF4/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibWebP/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/
-        # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/
-	FreeImageToolkit
-        LibJXR
-        LibJpeg
-        LibOpenJPEG
-        LibPNG
-        LibRawLite
-        LibTIFF4
-        LibWebP
-        MetaData
-        OpenEXR
-        ZLib
-    )
-endif()
+target_link_libraries(FreeImage PUBLIC
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJXR/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibJpeg/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibOpenJPEG/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibPNG/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibRawLite/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibTIFF4/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../LibWebP/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../MetaData/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../OpenEXR/debug/
+    # Remove: L${CMAKE_CURRENT_BINARY_DIR}/../ZLib/debug/
+    FreeImageToolkit
+    LibJXR
+    LibJpeg
+    LibOpenJPEG
+    LibPNG
+    LibRawLite
+    ${OtherPlugins}
+    LibWebP
+    MetaData
+    OpenEXR
+    ZLib
+)
 
 if(ANDROID)
     target_include_directories(FreeImage PUBLIC
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
-	${ANDROID_NDK_ROOT}/sysroot/usr/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(FreeImage PUBLIC
@@ -264,13 +215,13 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(FreeImage PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(FreeImage PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 

@@ -12,14 +12,14 @@ add_library(LibJXR STATIC
     ../../FreeImage/trunk/Source/LibJXR/image/decode/segdec.c
     ../../FreeImage/trunk/Source/LibJXR/image/decode/strInvTransform.c
     ../../FreeImage/trunk/Source/LibJXR/image/decode/strPredQuantDec.c
-    ../../FreeImage/trunk/Source/LibJXR/image/decode/strdec.c
     ../../FreeImage/trunk/Source/LibJXR/image/decode/strdec_x86.c
+    ../../FreeImage/trunk/Source/LibJXR/image/decode/strdec.c
     ../../FreeImage/trunk/Source/LibJXR/image/encode/encode.c ../../FreeImage/trunk/Source/LibJXR/image/encode/encode.h
     ../../FreeImage/trunk/Source/LibJXR/image/encode/segenc.c
     ../../FreeImage/trunk/Source/LibJXR/image/encode/strFwdTransform.c
     ../../FreeImage/trunk/Source/LibJXR/image/encode/strPredQuantEnc.c
-    ../../FreeImage/trunk/Source/LibJXR/image/encode/strenc.c
     ../../FreeImage/trunk/Source/LibJXR/image/encode/strenc_x86.c
+    ../../FreeImage/trunk/Source/LibJXR/image/encode/strenc.c
     ../../FreeImage/trunk/Source/LibJXR/image/sys/adapthuff.c
     ../../FreeImage/trunk/Source/LibJXR/image/sys/ansi.h
     ../../FreeImage/trunk/Source/LibJXR/image/sys/common.h
@@ -56,16 +56,15 @@ if(UNIX AND NOT APPLE AND NOT ANDROID)
     )
 
     target_compile_options(LibJXR PRIVATE
-        -std=c++11
-        -std=gnu++11
+       -std=gnu11
     )
 endif()
 
 if(ANDROID)
     target_include_directories(LibJXR PUBLIC
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
-	${ANDROID_NDK_ROOT}/sysroot/usr/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(LibJXR PRIVATE
@@ -92,13 +91,13 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(LibJXR PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(LibJXR PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 

@@ -14,9 +14,13 @@ target_include_directories(MetaData PUBLIC
     ../../FreeImage/trunk/Source/Metadata
 )
 
+if(UseTIFFLib)
+    set(OtherPlugins LibTIFF4)
+endif()
+
 target_link_libraries(MetaData PUBLIC
     FreeImageToolkit
-    LibTIFF4
+    ${OtherPlugins}
 )
 
 if(UNIX AND NOT APPLE AND NOT ANDROID)
@@ -32,9 +36,9 @@ endif()
 
 if(ANDROID)
     target_include_directories(MetaData PUBLIC
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
-	${ANDROID_NDK_ROOT}/sysroot/usr/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(MetaData PRIVATE
@@ -61,13 +65,13 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(MetaData PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(MetaData PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 

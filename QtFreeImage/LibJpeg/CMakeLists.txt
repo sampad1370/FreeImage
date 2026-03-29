@@ -70,16 +70,15 @@ if(UNIX AND NOT APPLE AND NOT ANDROID)
     )
 
     target_compile_options(LibJpeg PRIVATE
-        -std=c++11
-        -std=gnu++11
+        -std=gnu11
     )
 endif()
 
 if(ANDROID)
     target_include_directories(LibJpeg PUBLIC
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
-	${ANDROID_NDK_ROOT}/sysroot/usr/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(LibJpeg PRIVATE
@@ -106,13 +105,13 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(LibJpeg PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(LibJpeg PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 

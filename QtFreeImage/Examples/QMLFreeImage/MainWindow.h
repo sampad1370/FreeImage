@@ -10,6 +10,7 @@ class MainWindow : public QObject
 	Q_OBJECT
 public:
 	explicit MainWindow(QQuickItem *rootItem, QObject *parent = nullptr);
+	~MainWindow();
 
 	QByteArray load(QString filename);
 

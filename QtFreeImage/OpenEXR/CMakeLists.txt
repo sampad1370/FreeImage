@@ -129,7 +129,7 @@ add_library(OpenEXR STATIC
     ../../FreeImage/trunk/Source/OpenEXR/IlmImf/ImfXdr.h
     ../../FreeImage/trunk/Source/OpenEXR/IlmImf/ImfZip.cpp ../../FreeImage/trunk/Source/OpenEXR/IlmImf/ImfZip.h
     ../../FreeImage/trunk/Source/OpenEXR/IlmImf/ImfZipCompressor.cpp ../../FreeImage/trunk/Source/OpenEXR/IlmImf/ImfZipCompressor.h
-    ../../FreeImage/trunk/Source/OpenEXR/IlmImf/b44ExpLogTable.cpp ../../FreeImage/trunk/Source/OpenEXR/IlmImf/b44ExpLogTable.h
+    ../../FreeImage/trunk/Source/OpenEXR/IlmImf/b44ExpLogTable.h
     ../../FreeImage/trunk/Source/OpenEXR/IlmImf/dwaLookups.h
     ../../FreeImage/trunk/Source/OpenEXR/IlmThread/IlmThread.cpp ../../FreeImage/trunk/Source/OpenEXR/IlmThread/IlmThread.h
     ../../FreeImage/trunk/Source/OpenEXR/IlmThread/IlmThreadExport.h
@@ -203,9 +203,9 @@ endif()
 
 if(ANDROID)
     target_include_directories(OpenEXR PUBLIC
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
-	${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
-	${ANDROID_NDK_ROOT}/sysroot/usr/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include
+        ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/include/backward
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include
     )
 
     target_compile_definitions(OpenEXR PRIVATE
@@ -232,13 +232,13 @@ endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "armeabi-v7a")
     target_include_directories(OpenEXR PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/arm-linux-androideabi
     )
 endif()
 
 if(ANDROID AND ANDROID_ABI STREQUAL "arm64-v8a")
     target_include_directories(OpenEXR PUBLIC
-	${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
+        ${ANDROID_NDK_ROOT}/sysroot/usr/include/aarch64-linux-android
     )
 endif()
 
